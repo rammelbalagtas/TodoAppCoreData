@@ -8,82 +8,77 @@
 import UIKit
 
 class ToDoListTableViewController: UITableViewController {
-        
+    
+    var toDoList = ToDoList()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
+        
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+         self.navigationItem.leftBarButtonItem = self.editButtonItem
     }
-
-    // MARK: - Table view data source
-
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return toDoList.list.count
     }
-
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: "todo", for: indexPath) as? ToDoTableViewCell
+        else {preconditionFailure("cannot deque reusable cell")}
         // Configure the cell...
-
+        let todo = toDoList.list[indexPath.row]
+        // add strikethrough for completed task
+        if todo.isComplete{
+            let title = NSAttributedString(string: todo.title, attributes:
+                                        [.strikethroughStyle: 2,
+                                         .strikethroughColor: UIColor.gray])
+            cell.titleLabel?.attributedText = title
+        } else {
+            let title = NSAttributedString(string: todo.title)
+            cell.titleLabel?.attributedText = title
+        }
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    // to toggle between complete and not complete
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        toDoList.list[indexPath.row].isComplete.toggle()
+        tableView.reloadRows(at: [indexPath], with: .none)
     }
-    */
-
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
+            // Delete the row from the data source and table view
+            toDoList.deleteTodo(indexPath: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
+    
+    // add todo item via a popup alert contol
+    @IBAction func addToDoButton(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: "Add ToDo", message: "", preferredStyle: UIAlertController.Style.alert)
+        alert.addTextField { field in
+            field.placeholder = "Enter you todo item"
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+        alert.addAction(UIAlertAction(title: "Add", style: UIAlertAction.Style.default, handler: { _ in
+            guard let fields = alert.textFields else { return }
+            let todoField = fields[0]
+            guard let todo = todoField.text, !todo.isEmpty else { return }
+            self.toDoList.list.insert(ToDo(title: todo), at: 0)
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.tableView.insertRows(at: [indexPath], with: .top)
+        }))
+        present(alert, animated: true, completion: nil)
     }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
 }

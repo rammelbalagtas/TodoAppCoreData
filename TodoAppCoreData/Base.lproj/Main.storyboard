@@ -16,13 +16,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Dlk-Vu-B7r">
-                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="todo" id="Dlk-Vu-B7r" customClass="ToDoTableViewCell" customModule="TodoAppCoreData" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="43"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Dlk-Vu-B7r" id="xer-Hu-ipw">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vil-Kg-3qg">
+                                            <rect key="frame" x="20" y="11" width="374" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Vil-Kg-3qg" secondAttribute="bottom" id="U0d-dx-dX6"/>
+                                        <constraint firstItem="Vil-Kg-3qg" firstAttribute="leading" secondItem="xer-Hu-ipw" secondAttribute="leadingMargin" id="YoF-Hs-zDr"/>
+                                        <constraint firstItem="Vil-Kg-3qg" firstAttribute="top" secondItem="xer-Hu-ipw" secondAttribute="topMargin" id="cv6-9N-I9C"/>
+                                        <constraint firstItem="Vil-Kg-3qg" firstAttribute="trailing" secondItem="xer-Hu-ipw" secondAttribute="trailingMargin" id="gVF-ZJ-A0J"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="titleLabel" destination="Vil-Kg-3qg" id="ghC-67-Qy3"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -31,12 +48,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="ToDo List" id="CrA-5t-uGH">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="8oB-ZK-f9X"/>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="8oB-ZK-f9X">
+                            <connections>
+                                <action selector="addToDoButton:" destination="SnC-km-tK4" id="s1f-ay-AWf"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="szO-TN-yjK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1370" y="104"/>
+            <point key="canvasLocation" x="1369.5652173913045" y="103.79464285714285"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Uma-t4-35F">
