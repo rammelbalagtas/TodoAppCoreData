@@ -61,6 +61,15 @@ class ToDoListTableViewController: UITableViewController {
     // to toggle between complete and not complete
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         toDoList[indexPath.row].isComplete.toggle()
+        let moc = persistentContainer.viewContext
+        moc.perform {
+            do {
+                try moc.save()
+            } catch {
+                moc.rollback()
+            }
+        }
+        //update table view
         tableView.reloadRows(at: [indexPath], with: .none)
     }
     
@@ -76,10 +85,10 @@ class ToDoListTableViewController: UITableViewController {
                 } catch {
                     moc.rollback()
                 }
-                //update table view
-                self.fetchData()
-                tableView.deleteRows(at: [indexPath], with: .fade)
             }
+            //update table view
+            toDoList.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     
@@ -105,10 +114,10 @@ class ToDoListTableViewController: UITableViewController {
                 } catch {
                     moc.rollback()
                 }
-                //update table view
-                self.fetchData()
-                tableView.reloadData()
             }
+            //update table view
+            toDoList.append(todo)
+            tableView.reloadData()
         }))
         present(alert, animated: true, completion: nil)
     }
